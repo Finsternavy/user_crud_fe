@@ -26,3 +26,15 @@ def about():
         version_json = version_response.json()
         out ["version"] = version_json.get("version")
     return render_template("about.html", content=out)
+
+@app.get("/users")
+def display_users():
+    user_url = "%s/%s" % (BACKEND_URL + "/", "users")
+    response = requests.get(user_url)
+    if response.status_code == 200:
+        response_json = response.json()
+        user_list = response_json.get("users")
+        return render_template("user_list.html", users=user_list)
+    else:
+        return render_template("error.html")
+
